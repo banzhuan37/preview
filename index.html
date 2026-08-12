@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b2c3c" />
+  <title>BioSearch Vision｜果蝇行为定量分析平台</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="windows-titlebar">
+      <div class="titlebar-drag">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="brand-dot dot-a"></span>
+          <span class="brand-dot dot-b"></span>
+          <span class="brand-dot dot-c"></span>
+        </div>
+        <span class="window-title">BioSearch Vision</span>
+        <span class="window-context" id="windowContext">科研工作台</span>
+      </div>
+      <div class="window-controls" aria-label="窗口控制">
+        <button title="最小化" aria-label="最小化"><span class="minimize-icon"></span></button>
+        <button title="最大化" aria-label="最大化"><span class="maximize-icon"></span></button>
+        <button class="close-window" title="关闭" aria-label="关闭"><span class="close-icon"></span></button>
+      </div>
+    </header>
+
+    <div class="workspace-shell">
+      <aside class="sidebar">
+        <div class="product-lockup">
+          <div class="product-symbol">
+            <svg viewBox="0 0 40 40" aria-hidden="true">
+              <path d="M20 7c-4.6 0-8.3 4.2-8.3 9.4 0 1.1.2 2.2.5 3.2-4.2.8-7.2 3.3-7.2 6.2 0 3.7 4.6 6.7 10.3 6.7 1.7 0 3.3-.3 4.7-.8 1.4.5 3 .8 4.7.8 5.7 0 10.3-3 10.3-6.7 0-2.9-3-5.4-7.2-6.2.3-1 .5-2.1.5-3.2C28.3 11.2 24.6 7 20 7Z" fill="currentColor" opacity=".18"/>
+              <path d="M20 9.5v21M12.8 17.2h14.4M11.6 22.8l16.8 0M15 12.5l10 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="20" cy="7.5" r="2.2" fill="currentColor"/>
+            </svg>
+          </div>
+          <div>
+            <strong>BioSearch</strong>
+            <span>VISION · BEHAVIOR LAB</span>
+          </div>
+        </div>
+
+        <nav class="primary-nav" aria-label="主要导航">
+          <p class="nav-label">工作空间</p>
+          <button class="nav-item active" data-page="dashboard">
+            <span class="nav-icon" data-icon="home"></span><span>科研总览</span>
+          </button>
+          <button class="nav-item" data-page="projects">
+            <span class="nav-icon" data-icon="folder"></span><span>实验项目</span><span class="nav-count">12</span>
+          </button>
+          <button class="nav-item" data-page="tracking">
+            <span class="nav-icon" data-icon="target"></span><span>轨迹工作台</span>
+          </button>
+
+          <p class="nav-label">分析中心</p>
+          <button class="nav-item" data-page="locomotion">
+            <span class="nav-icon" data-icon="activity"></span><span>运动能力</span>
+          </button>
+          <button class="nav-item" data-page="spatial">
+            <span class="nav-icon" data-icon="map"></span><span>空间偏好</span>
+          </button>
+          <button class="nav-item" data-page="social">
+            <span class="nav-icon" data-icon="social"></span><span>社交行为</span>
+          </button>
+          <button class="nav-item" data-page="statistics">
+            <span class="nav-icon" data-icon="stats"></span><span>组间统计</span>
+          </button>
+
+          <p class="nav-label">成果</p>
+          <button class="nav-item" data-page="data">
+            <span class="nav-icon" data-icon="database"></span><span>数据管理</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="storage-card">
+            <div class="storage-row"><span>本地数据空间</span><strong>68%</strong></div>
+            <div class="progress-track"><span style="width:68%"></span></div>
+            <small>82.4 GB / 120 GB</small>
+          </div>
+          <button class="profile-card" id="profileButton">
+            <span class="avatar">许</span>
+            <span class="profile-copy"><strong>许研究员</strong><small>神经行为实验室</small></span>
+            <span class="more-dots">•••</span>
+          </button>
+        </div>
+      </aside>
+
+      <section class="main-area">
+        <div class="commandbar">
+          <button class="mobile-menu" id="mobileMenu" aria-label="打开菜单">☰</button>
+          <div class="breadcrumb" id="breadcrumb"><span>工作空间</span><i>›</i><strong>科研总览</strong></div>
+          <div class="command-actions">
+            <label class="global-search">
+              <span class="search-icon"></span>
+              <input id="globalSearch" type="search" placeholder="搜索实验、样本或指标" />
+              <kbd>Ctrl K</kbd>
+            </label>
+            <button class="icon-button" title="通知" aria-label="通知"><span class="bell-icon"></span><i class="notification-dot"></i></button>
+            <button class="primary-button small" id="newExperimentButton"><span>＋</span> 新建实验</button>
+          </div>
+        </div>
+
+        <main class="page-scroll" id="pageContent" tabindex="-1"></main>
+      </section>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="modal-backdrop" id="experimentModal" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div><span class="eyebrow">NEW EXPERIMENT</span><h2 id="modalTitle">创建果蝇行为实验</h2></div>
+        <button class="modal-close" data-close-modal aria-label="关闭">×</button>
+      </div>
+      <div class="stepper" aria-label="创建进度">
+        <span class="step active"><i>1</i>基本信息</span><span class="step-line"></span>
+        <span class="step"><i>2</i>实验设计</span><span class="step-line"></span>
+        <span class="step"><i>3</i>分析方案</span>
+      </div>
+      <div class="form-grid">
+        <label class="field span-2"><span>实验名称</span><input id="experimentName" value="果蝇光照刺激行为实验" /></label>
+        <label class="field"><span>实验类型</span><input id="experimentType" value="光照刺激行为分析" placeholder="请输入实验类型" /></label>
+        <label class="field"><span>研究员</span><input id="researcherName" value="许研究员" /></label>
+        <label class="field"><span>物种 / 品系</span><input value="D. melanogaster / w1118" /></label>
+        <label class="field"><span>实验日期</span><input type="date" value="2026-08-10" /></label>
+        <label class="field span-2"><span>研究目的</span><textarea>评估不同强度光照刺激对果蝇运动能力和空间偏好的影响。</textarea></label>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-button" data-close-modal>取消</button>
+        <button class="primary-button" id="createProject">创建并配置实验 <span>→</span></button>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
